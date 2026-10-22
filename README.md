@@ -23,6 +23,8 @@ npm run preview
 
 ## Como usar
 
+- As áreas disponíveis são **Academica, Mobilização, Eventos, APSM e Gestão**. Posts antigos mantêm sua área anterior até a edição; selecione uma área atual ao salvá-los.
+- Ao marcar **Usar um template existente**, informe o nome ou referência no campo exibido.
 - Clique em **Solicitar post** e preencha título, área, prazo, ideias, intenção, formato e uso de template.
 - Abra um cartão para editar seus detalhes, atribuir um responsável e mudar a etapa: Post pedido → Sendo feito → Post feito → Programado → Postado.
 - O responsável é obrigatório a partir da etapa Sendo feito. O prazo indica a entrega solicitada; Programado é uma etapa de organização, sem integração de publicação automática.
