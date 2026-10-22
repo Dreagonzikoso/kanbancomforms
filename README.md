@@ -35,14 +35,23 @@ npm run preview
 - Alterne entre os temas claro e escuro pelo botão no topo. A escolha fica salva neste navegador.
 - Os exemplos iniciais podem ser editados ou excluídos pela janela do cartão.
 
+## Banco de dados com Supabase
+
+A integração com login e banco compartilhado está implementada. Siga o [guia de configuração do Supabase](docs/SUPABASE.md) para criar o projeto, executar o SQL, autorizar a equipe e configurar o ambiente/Vercel. Sem as variáveis, a aplicação continua no modo local.
+
 ## Persistência e limitações
 
-Os dados são salvos em `localStorage`, na chave `cavc-posts`, apenas neste navegador e endereço. Limpar os dados do navegador remove os posts. Não há servidor, autenticação ou sincronização entre usuários: para uso coletivo da equipe, conecte a aplicação a um backend/banco de dados com controle de acesso. Não armazene informações sensíveis nesta versão.
+No modo local, os posts ficam em `localStorage` (`cavc-posts`) neste navegador. No modo Supabase, os posts ficam no banco compartilhado, acessíveis apenas às contas autorizadas pela tabela `team_members`. O quadro atualiza ao voltar à janela ou clicar em **Atualizar quadro**. Dados antigos locais não são migrados automaticamente.
+
+Testes: `npm test` (contrato de persistência e tratamento de conflitos). Compilação: `npm run build`. O teste contra o serviço real exige configurar o projeto conforme o guia.
 
 As fontes usam Google Fonts, com fontes locais de fallback quando indisponíveis. Ícones são fornecidos por lucide-react.
 
 ## Estrutura
 
 - `src/main.jsx`: formulário, cartões, etapas, filtros e persistência.
+- `src/AuthGate.jsx`: login e sessão.
+- `src/postRepository.js` e `src/usePostStore.js`: persistência local/remota e conflitos.
+- `supabase/schema.sql`: tabelas, validações e políticas de acesso.
 - `src/style.css`: identidade visual escura e layouts responsivos.
 - `index.html`: entrada da aplicação.
