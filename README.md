@@ -37,7 +37,7 @@ npm run preview
 
 ## Banco de dados com Supabase
 
-A integração com login e banco compartilhado está implementada. Siga o [guia de configuração do Supabase](docs/SUPABASE.md) para criar o projeto, executar o SQL, autorizar a equipe e configurar o ambiente/Vercel. Sem as variáveis, a aplicação continua no modo local.
+A integração com login por nome de usuário e senha, opção de mostrar/ocultar senha e banco compartilhado está implementada. Contas antigas continuam aceitando e-mail no login. A opção **Registrar conta** permite criar um usuário, que aguarda aprovação administrativa para acessar o quadro. Habilite cadastros e desative confirmação de e-mail no Supabase conforme o guia. Siga o [guia de configuração do Supabase](docs/SUPABASE.md) para criar o projeto, executar o SQL, autorizar a equipe e configurar o ambiente/Vercel. Sem as variáveis, a aplicação continua no modo local.
 
 ## Persistência e limitações
 

@@ -19,15 +19,28 @@ Execute esse arquivo uma vez num projeto novo. Ele usa uma transação: se houve
 
 ## 2. Criar as contas da equipe
 
-O acesso é restrito por convite administrativo. Não há cadastro público no site.
+O site possui a opção **Registrar conta**, com nome de usuário, senha (mínimo de 8 caracteres) e confirmação. Criar uma conta não autoriza o acesso ao quadro: o usuário verá **Aguardando aprovação** até ser incluído em `team_members` pelo administrador.
 
-1. Em **Authentication → Providers → Email** (ou nas configurações de autenticação, conforme o painel), mantenha e-mail/senha habilitado e **desative novos cadastros públicos** (“Allow new users to sign up”).
-2. Em **Authentication → Users → Add user → Create new user**, crie uma conta por pessoa, com e-mail e senha, e confirme o e-mail pela opção administrativa do painel. Use um canal privado para combinar a senha inicial; não coloque senhas no GitHub ou no código. A redefinição de senha nesta versão é feita pelo administrador no painel.
-3. Cadastre a pessoa como membro autorizado pelo SQL Editor, usando o e-mail real da conta criada:
+Para habilitar o cadastro pelo site:
+
+1. Em **Authentication → Sign In / Providers** (ou configurações equivalentes do painel), habilite **Allow new users to sign up** e o provedor **Email**.
+2. Desative **Confirm email** no provedor Email. Os nomes são transformados em identificadores internos `nome@usuarios.cavc.invalid`, que não recebem mensagens; o cadastro por nome depende dessa configuração. Não use convite ou recuperação por e-mail com esses identificadores.
+3. A pessoa abre **Registrar conta**, preenche nome e senha e aguarda autorização. O Supabase gerencia a senha; o site não salva senhas em tabelas próprias.
+4. Autorize a conta usando o SQL abaixo. A pessoa poderá clicar em **Verificar acesso novamente** para abrir o quadro.
+
+As políticas RLS de `schema.sql` continuam obrigatórias. Não crie políticas para permitir que usuários se incluam na equipe. O cadastro não escreve em `team_members`. Configure limites de autenticação no painel Supabase conforme o uso; novos cadastros não devem receber permissões de equipe automaticamente.
+
+Também é possível criar contas manualmente:
+
+1. Em **Authentication → Providers → Email** (ou nas configurações de autenticação, conforme o painel), mantenha e-mail/senha habilitado. Se quiser permitir apenas contas criadas pelo administrador, desative “Allow new users to sign up”; nesse caso, o formulário de registro do site exibirá que o cadastro está desativado.
+2. Em **Authentication → Users → Add user → Create new user**, crie uma conta por pessoa, usando como e-mail interno `nome.de.usuario@usuarios.cavc.invalid` e a senha da pessoa. Por exemplo, para o login **marina.silva**, crie `marina.silva@usuarios.cavc.invalid`. Marque a opção administrativa de confirmação automática do e-mail. O nome deve ter de 3 a 40 caracteres, começar com letra/número e usar apenas letras sem acento, números, ponto, hífen ou sublinhado; maiúsculas são convertidas em minúsculas. Cada nome precisa ser único.
+
+   Esse endereço usa o domínio reservado `.invalid` e **não recebe mensagens**; serve apenas como identificador interno de autenticação. Não envie convites ou links de recuperação a ele. Use criação direta de usuário com confirmação automática, não convite por e-mail. Use um canal privado para combinar a senha inicial; não coloque senhas no GitHub ou no código. A redefinição de senha nesta versão é feita pelo administrador no painel.
+3. Cadastre a pessoa como membro autorizado pelo SQL Editor, usando o identificador interno da conta criada:
 
 ```sql
 insert into public.team_members (user_id)
-select id from auth.users where lower(email) = lower('pessoa@exemplo.com')
+select id from auth.users where lower(email) = lower('marina.silva@usuarios.cavc.invalid')
 on conflict (user_id) do nothing;
 ```
 
@@ -37,6 +50,8 @@ on conflict (user_id) do nothing;
 select u.email from public.team_members m
 join auth.users u on u.id = m.user_id;
 ```
+
+No site, a pessoa digita apenas **marina.silva** e sua senha. O botão de olho permite mostrar/ocultar a senha e não envia o formulário. Contas antigas com e-mails reais continuam aceitando o e-mail completo no campo Nome de usuário; não são renomeadas automaticamente. Para passar uma conta antiga ao login por nome, o administrador deve alterar o e-mail no Supabase Auth para o identificador interno escolhido e confirmar a alteração administrativamente, preservando o mesmo ID em `team_members`. Se preferir, mantenha a conta antiga com login por e-mail.
 
 Uma conta autenticada sem registro em `team_members` não acessa os posts. Todos os membros autorizados podem consultar, criar, editar e excluir posts do mesmo quadro.
 
@@ -77,7 +92,7 @@ Se usar este ambiente cloud, configure as duas variáveis de aplicação nas con
 1. Envie as alterações para o GitHub e faça merge na branch de produção (normalmente `main`).
 2. No projeto da Vercel, abra **Settings → Environment Variables** e adicione as duas variáveis acima para **Production**. Para previews usarem esse banco também, adicione em **Preview**; prefira um projeto Supabase separado para testes.
 3. Faça um novo **Deploy/Redeploy**: Vite lê essas variáveis durante a compilação. Alterar variáveis sem reconstruir não muda o site publicado.
-4. Abra a URL no Brave e entre com uma conta da equipe. Este login por senha não usa redirecionamento OAuth ou link mágico.
+4. Abra a URL no Brave e entre com uma conta da equipe. O login usa nome de usuário e senha (ou e-mail para contas antigas) e não usa redirecionamento OAuth ou link mágico.
 
 ## 5. Conferir a integração
 
@@ -87,7 +102,7 @@ Se usar este ambiente cloud, configure as duas variáveis de aplicação nas con
 4. Edite, arraste entre etapas e exclua o post de teste. O site só confirma após o banco responder.
 5. Use **Atualizar quadro** para buscar mudanças de outras pessoas. Ao voltar o foco para a janela, o site também atualiza. Esta versão não usa Supabase Realtime.
 6. Se duas pessoas editarem o mesmo post, a segunda recebe um aviso de conflito. Atualize e abra novamente o cartão antes de reaplicar a edição; a alteração anterior não é sobrescrita silenciosamente.
-7. Uma conta não incluída na equipe deve receber “Acesso negado”. Sem login, o quadro não deve aparecer.
+7. Crie uma conta pelo site e confira a tela **Aguardando aprovação**, sem exibir posts. Inclua a conta em `team_members` e clique em **Verificar acesso novamente**. Sem login, o quadro não deve aparecer.
 
 ## Posts antigos e limitações
 
