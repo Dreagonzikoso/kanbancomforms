@@ -21,12 +21,29 @@ const themeOptions=[
   {value:'light',label:'CLARO LUMIAR',color:'#fbf1dc'},
 ];
 
+const themeCookie='cavc-theme';
+const defaultTheme='dark-lumiar';
+
+function readThemeCookie(){
+  const prefix=`${themeCookie}=`;
+  return document.cookie.split(';').map(cookie=>cookie.trim())
+    .find(cookie=>cookie.startsWith(prefix))?.slice(prefix.length);
+}
+
 function readTheme(){
   try{
-    const saved=localStorage.getItem('cavc-theme');
+    const saved=readThemeCookie() ?? localStorage.getItem(themeCookie);
     if(themeOptions.some(option=>option.value===saved))return saved;
   }catch{}
-  return 'dark';
+  return defaultTheme;
+}
+
+function saveTheme(theme){
+  try{
+    const secure=location.protocol==='https:'?'; Secure':'';
+    document.cookie=`${themeCookie}=${theme}; Path=/; Max-Age=31536000; SameSite=Lax${secure}`;
+    if(readThemeCookie()===theme)localStorage.removeItem(themeCookie);
+  }catch{}
 }
 
 function applyTheme(theme){
@@ -65,7 +82,7 @@ function App({identity}){
  const [dragged,setDragged]=useState(null),[dropTarget,setDropTarget]=useState(null);
  useEffect(()=>{
    applyTheme(theme);
-   try{localStorage.setItem('cavc-theme',theme)}catch{}
+   saveTheme(theme);
  },[theme]);
  const {posts,loading,busy,storeError,syncError,refresh,savePost,removePost,changeAssignment,cloud}=usePostStore(initial);
  const [query,setQuery]=useState(''),[area,setArea]=useState('Todas as áreas'),[modal,setModal]=useState(null),[draft,setDraft]=useState(empty),[error,setError]=useState(''),[notice,setNotice]=useState(''),[view,setView]=useState('board');
