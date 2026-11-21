@@ -1,4 +1,4 @@
-# CAVC · Comunicação
+# CAVC Gestão Lumiar
 
 Site em React e Vite para organizar solicitações de posts, com visual escuro e responsivo.
 

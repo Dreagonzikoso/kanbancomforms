@@ -37,7 +37,7 @@ export default function MemberGate({children,user,logout,sessionError}) {
   };
   const [title,description]=messages[access.status];
   return <div className="auth-screen"><section className="auth-panel">
-    <div className="eyebrow">CAVC · COMUNICAÇÃO</div>
+    <div className="eyebrow">CAVC Gestão Lumiar</div>
     <h1>{title}</h1>
     <p>{username}</p>
     <p role="status">{description}</p>

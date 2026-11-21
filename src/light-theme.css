@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght,SOFT,WONK@9..144,400..800,100,1&family=Jost:wght@400;500;600;700&display=swap');
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --paper: #fff8ea;
+  --cream: #fbf1dc;
+  --surface: #fffdf6;
+  --ink: #3a1a06;
+  --muted: #6b4426;
+  --copper: #963417;
+  --brown: #913601;
+  --mustard: #f4ae32;
+  --line: #e3c7a9;
+  --soft-gold: #fae4b8;
+  --shadow: 0 1px 0 #3a1a060f, 0 10px 24px -16px #3a1a0645;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Jost', 'Segoe UI', sans-serif;
+}
+
+[data-theme="light"] :is(.brand, h1, h2, h3, .stats strong) {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 700;
+  font-variation-settings: "SOFT" 100, "WONK" 1;
+  letter-spacing: -.01em;
+}
+
+[data-theme="light"] :is(aside, header, .weekday) {background:var(--cream)}
+[data-theme="light"] :is(aside, header, footer, .toolbar, .profile, .card-footer, .modal-actions) {border-color:var(--line)}
+[data-theme="light"] :is(.brand>div>span, .workspace-label, .eyebrow, .nav, .nav>svg:last-child, .breadcrumb b) {color:var(--brown)}
+[data-theme="light"] .brand>div>span {font-family:inherit;letter-spacing:.08em}
+[data-theme="light"] .nav.active {background:var(--soft-gold);color:var(--ink)}
+[data-theme="light"] .nav span {border-color:var(--line)}
+[data-theme="light"] :is(.breadcrumb, .breadcrumb span, .intro p, .profile small, .storage-status, .local-note, footer, footer b) {color:var(--muted)}
+[data-theme="light"] :is(.live-dot, .online) {background:var(--brown)}
+
+[data-theme="light"] :is(.stats, .card, .modal, .auth-panel) {
+  background:var(--surface);
+  color:var(--ink);
+  border-color:var(--line);
+  box-shadow:var(--shadow);
+}
+[data-theme="light"] .card {border-radius:11px}
+[data-theme="light"] :is(.stats>div, .stat-icon) {border-color:var(--line)}
+[data-theme="light"] :is(.stats div div>span, .stat-icon, .stat-icon.green, .card>p, .card-footer, .post-person small, .optional, .auth-panel p, .auth-panel small) {color:var(--muted)}
+[data-theme="light"] .card h3 {color:var(--ink)}
+[data-theme="light"] .card:hover {border-color:var(--brown)}
+[data-theme="light"] :is(.avatar, .count) {background:var(--soft-gold);color:var(--ink);border-color:var(--line)}
+[data-theme="light"] :is(.card-tags span, .card-tags .template) {color:var(--muted);border-color:var(--line)}
+[data-theme="light"] .tag {background:#f7e4b7;color:#623906}
+[data-theme="light"] .area-1 {background:#f4deca;color:#713b24}
+[data-theme="light"] .area-2 {background:#ecd9c2;color:#693e24}
+[data-theme="light"] .area-3 {background:#f9e7c0;color:#684205}
+[data-theme="light"] .area-4 {background:#f2ddcb;color:#764124}
+[data-theme="light"] .stage-icon {color:var(--copper)}
+[data-theme="light"] .column-header button {color:var(--brown)}
+
+[data-theme="light"] :is(.search, .theme-toggle, .area-picker summary, .area-options, .secondary, .month-controls button, .storage-status button) {
+  background:var(--surface);
+  color:var(--brown);
+  border-color:var(--line);
+}
+[data-theme="light"] :is(.search input, .area-options button) {color:var(--ink)}
+[data-theme="light"] .search input::placeholder {color:var(--muted)}
+[data-theme="light"] .area-options button:is(:hover, :focus-visible, [aria-pressed="true"]) {background:var(--soft-gold);color:var(--ink)}
+[data-theme="light"] :is(.tabs button, .add-card) {color:var(--muted)}
+[data-theme="light"] .tabs .selected {color:var(--brown);border-color:var(--brown)}
+[data-theme="light"] .add-card {border-color:var(--line)}
+[data-theme="light"] .add-card:hover {color:var(--brown);border-color:var(--brown)}
+[data-theme="light"] :is(.primary, .toast) {background:var(--mustard);color:var(--ink)}
+[data-theme="light"] .primary:hover {background:#f8bf58}
+[data-theme="light"] .drop-target {background:#f4ae3226;outline-color:var(--brown)}
+
+[data-theme="light"] :is(.modal label, .modal label>small, .checkbox small, .password-toggle, .close) {color:var(--muted)}
+[data-theme="light"] :is(.modal input, .modal select, .modal textarea, .auth-panel input, .auth-panel select, .approval select, .auth-switch) {
+  background:var(--paper);
+  color:var(--ink);
+  border-color:var(--line);
+}
+[data-theme="light"] .modal label.checkbox {background:var(--cream);border-color:var(--line)}
+[data-theme="light"] .checkbox input {accent-color:var(--brown)}
+[data-theme="light"] :is(.canva-link, .delete, .error, .auth-panel .error) {color:var(--copper)}
+[data-theme="light"] .auth-screen {background:var(--paper);color:var(--ink)}
+[data-theme="light"] .photo-trigger svg {background:var(--cream);color:var(--copper);border-color:var(--line)}
+[data-theme="light"] :is(button,a,summary,input,textarea,select):focus-visible {outline-color:var(--brown)}
+[data-theme="light"] .search:focus-within {border-color:var(--brown)}
+
+[data-theme="light"] :is(.month-grid, .month-day, .weekday, .approval) {border-color:var(--line)}
+[data-theme="light"] :is(.weekday, .day-number, .month-toolbar p) {color:var(--muted)}
+[data-theme="light"] .month-day {background:var(--surface)}
+[data-theme="light"] .month-day.outside {background:var(--cream)}
+[data-theme="light"] .month-day.today {box-shadow:inset 0 0 0 1px var(--brown)}
+[data-theme="light"] :is(.calendar-post, .undated button) {background:var(--cream);color:var(--ink);border-color:var(--line)}
+[data-theme="light"] .calendar-post small {color:var(--muted)}
+[data-theme="light"] .calendar-post.status-1 {background:#fae4b8}
+[data-theme="light"] .calendar-post.status-2 {background:#f6e2cc}
+[data-theme="light"] .calendar-post.status-3 {background:#f4dbcb}
+[data-theme="light"] .calendar-post.status-4 {background:#f7d796}
