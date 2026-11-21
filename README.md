@@ -25,10 +25,9 @@ npm run preview
 
 - As áreas disponíveis são **Academica, Mobilização, Eventos, APSM e Gestão**. Posts antigos mantêm sua área anterior até a edição; selecione uma área atual ao salvá-los.
 - Ao marcar **Usar um template existente**, informe o nome ou referência no campo exibido.
-- Clique em **Solicitar post** e preencha título, área, prazo, ideias, intenção, formato e uso de template.
-- Abra um cartão para editar seus detalhes, atribuir um responsável e mudar a etapa: Post pedido → Sendo feito → Post feito → Programado → Postado.
-- O responsável é obrigatório a partir da etapa Sendo feito. O prazo indica a entrega solicitada; Programado é uma etapa de organização, sem integração de publicação automática.
-- Arraste cartões entre as colunas do kanban no computador. Se o post ainda não tiver responsável, a janela de detalhes abrirá para preenchê-lo antes de confirmar a mudança. No celular ou pelo teclado, use o campo **Etapa** nos detalhes do cartão.
+- No quadro compartilhado, a Diretoria cria, atribui e movimenta os próprios pedidos. O Secretário também pode gerenciar pedidos e aprovar cadastros.
+- Bixo/Bixete pode aceitar ou recusar uma atribuição ou assumir um pedido disponível. Ao aceitar ou assumir, o pedido passa para **Sendo feito**. A pessoa responsável pode editar o pedido e movê-lo para **Post feito**.
+- O nome do responsável aparece no cartão. A etapa pode ser alterada pelo campo **Etapa** ou arrastando o cartão entre as colunas permitidas. **Programado** é uma etapa de organização, sem integração de publicação automática.
 - Use a busca e o filtro por área no quadro e no calendário.
 - A aba **Calendário** exibe um mês completo com os posts nos seus prazos de entrega. Navegue pelas setas, use **Hoje** para voltar ao mês atual e clique num post para abrir os detalhes. No celular, deslize horizontalmente para ver todos os dias da semana.
 - Nos detalhes do cartão, preencha **Link do Canva** com um endereço HTTPS do Canva. Depois de salvo, o link fica disponível ao reabrir o post, com o botão **Abrir design no Canva**. O site não altera as permissões de acesso do arquivo no Canva.
@@ -37,7 +36,7 @@ npm run preview
 
 ## Banco de dados com Supabase
 
-A integração com login por nome de usuário e senha, opção de mostrar/ocultar senha e banco compartilhado está implementada. Contas antigas continuam aceitando e-mail no login. A opção **Registrar conta** permite criar um usuário, que aguarda aprovação administrativa para acessar o quadro. Habilite cadastros e desative confirmação de e-mail no Supabase conforme o guia. Siga o [guia de configuração do Supabase](docs/SUPABASE.md) para criar o projeto, executar o SQL, autorizar a equipe e configurar o ambiente/Vercel. Sem as variáveis, a aplicação continua no modo local.
+O cadastro usa e-mail real, nome de usuário e cargo solicitado. Depois de confirmar o e-mail, a pessoa aguarda a aprovação do Secretário, que define o cargo efetivo. O [guia do Supabase](docs/SUPABASE.md) inclui a migração que preserva os posts e a autorização do primeiro Secretário. Sem as variáveis, a aplicação usa o modo local.
 
 ## Persistência e limitações
 

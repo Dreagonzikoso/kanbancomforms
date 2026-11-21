@@ -14,11 +14,14 @@ export function usePostStore(initial) {
     finally{if(mounted.current&&token===request.current)setLoading(false)}
   }
   useEffect(()=>{mounted.current=true;refresh();const onFocus=()=>refresh();window.addEventListener('focus',onFocus);return()=>{mounted.current=false;request.current++;window.removeEventListener('focus',onFocus)}},[]);
-  async function mutate(post,operation) {
+  async function mutate(post,operation,action,memberId) {
     if(locked.current)return false;
     locked.current=true;request.current++;setLoading(false);setBusy(true);setStoreError('');
     try{
-      const saved=repository ? operation==='remove' ? (await repository.remove(post),null) : await repository.save(post,operation==='create') : post;
+      let saved;
+      if(operation==='remove')await repository.remove(post);
+      else if(operation==='assignment')saved=await repository.changeAssignment(post,action,memberId);
+      else saved=await repository.save(post,operation==='create');
       if(!mounted.current)return false;
       setPosts(current=>{
         const next=operation==='remove'?current.filter(p=>p.id!==post.id):operation==='create'?[...current,saved]:current.map(p=>p.id===post.id?saved:p);
@@ -34,5 +37,5 @@ export function usePostStore(initial) {
     try{const next=operation==='remove'?posts.filter(p=>p.id!==post.id):operation==='create'?[...posts,post]:posts.map(p=>p.id===post.id?post:p);localStorage.setItem('cavc-posts',JSON.stringify(next));setPosts(next);setStoreError('');return true}
     catch{setStoreError('Não foi possível salvar neste navegador. Verifique o espaço disponível.');return false}
   }
-  return {posts,loading,busy,storeError,refresh,savePost:(post,isNew)=>localMutate(post,isNew?'create':'update'),removePost:post=>localMutate(post,'remove'),cloud:Boolean(repository)};
+  return {posts,loading,busy,storeError,refresh,savePost:(post,isNew)=>localMutate(post,isNew?'create':'update'),changeAssignment:(post,action,memberId)=>mutate(post,'assignment',action,memberId),removePost:post=>localMutate(post,'remove'),cloud:Boolean(repository)};
 }

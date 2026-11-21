@@ -1,29 +1,33 @@
-// Reserved domain: internal Auth identifiers, never a destination for email.
-export const USERNAME_DOMAIN = 'usuarios.cavc.invalid';
+import {roleLabels} from './teamRoles.js';
+
+const legacyDomain = 'usuarios.cavc.invalid';
 const usernamePattern = /^[a-z0-9][a-z0-9._-]{2,39}$/;
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export function loginEmail(value) {
   const login = value.trim().toLowerCase();
-  // Existing accounts retain email login during the transition.
-  if (login.includes('@')) {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(login)) throw new Error('Informe um nome de usuário válido ou o e-mail da conta existente.');
-    return login;
-  }
-  if (!usernamePattern.test(login)) throw new Error('Use um nome de usuário de 3 a 40 caracteres, com letras sem acento, números, ponto, hífen ou sublinhado.');
-  return `${login}@${USERNAME_DOMAIN}`;
+  if (emailPattern.test(login)) return login;
+  if (usernamePattern.test(login)) return `${login}@${legacyDomain}`;
+  throw new Error('Informe o e-mail da conta ou o nome de usuário do cadastro antigo.');
 }
-export function displayLogin(user) {
+
+export function displayLogin(user, member) {
+  if (member?.username) return member.username;
   const email = user.email || '';
-  if (email.endsWith(`@${USERNAME_DOMAIN}`)) return email.slice(0,-USERNAME_DOMAIN.length-1);
-  return user.user_metadata?.display_name || email;
+  return email.endsWith(`@${legacyDomain}`) ? email.split('@')[0] : email;
 }
-export function registrationEmail(value) {
-  const username=value.trim().toLowerCase();
-  if (!usernamePattern.test(username)) throw new Error('Use um nome de usuário de 3 a 40 caracteres, com letras sem acento, números, ponto, hífen ou sublinhado.');
-  return `${username}@${USERNAME_DOMAIN}`;
-}
-export function validateRegistration(username,password,confirmation) {
-  const email=registrationEmail(username);
-  if(password.length<8)throw new Error('A senha deve ter pelo menos 8 caracteres.');
-  if(password!==confirmation)throw new Error('As senhas não coincidem.');
-  return email;
+
+export function validateRegistration(email, username, requestedRole, password, confirmation) {
+  email = email.trim().toLowerCase();
+  username = username.trim().toLowerCase();
+  if (!emailPattern.test(email) || /\.(invalid|test|example|localhost)$/.test(email)) {
+    throw new Error('Informe um e-mail válido que você possa confirmar.');
+  }
+  if (!usernamePattern.test(username)) {
+    throw new Error('Use de 3 a 40 caracteres: letras sem acento, números, ponto, hífen ou sublinhado.');
+  }
+  if (!Object.hasOwn(roleLabels, requestedRole)) throw new Error('Selecione o cargo solicitado.');
+  if (password.length < 8) throw new Error('A senha deve ter pelo menos 8 caracteres.');
+  if (password !== confirmation) throw new Error('As senhas não coincidem.');
+  return {email, data: {username, requested_role: requestedRole}};
 }

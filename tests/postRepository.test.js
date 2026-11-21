@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createClient} from '@supabase/supabase-js';
 import {createPostRepository,toRow,fromRow,databaseMessage} from '../src/postRepository.js';
 const post={id:'2f754ee4-c5ee-4f29-9d47-19825dcc1a45',title:' Post ',area:'APSM',idea:' Ideia ',intent:' Intenção ',date:'2026-12-01',format:'Feed',template:true,templateName:' Modelo ',owner:' Ana ',canvaUrl:'https://www.canva.com/design/a/edit',status:1,updatedAt:'2026-10-22T10:00:00.000Z'};
-const row={...toRow(post),id:post.id,updated_at:post.updatedAt};
+const row={...toRow(post),id:post.id,owner:"Ana",status:1,updated_at:post.updatedAt};
 function setup(handler){
  const calls=[];
  const client=createClient('https://test.supabase.co','public-test-key',{auth:{persistSession:false,autoRefreshToken:false},global:{fetch:async(url,options)=>{const call={url:new URL(url),method:options.method,body:options.body?JSON.parse(options.body):null};calls.push(call);const result=handler(call);return new Response(JSON.stringify(result.body),{status:result.status||200,headers:{'content-type':'application/json'}})}}});
@@ -13,7 +13,7 @@ test('mapping preserves post details and clears a disabled template',()=>{
  assert.equal(fromRow(row).canvaUrl,post.canvaUrl);
  assert.equal(fromRow(row).templateName,'Modelo');
  assert.equal(toRow({...post,template:false}).template_name,'');
- assert.equal(toRow(post).owner,'Ana');
+ assert.equal(fromRow(row).owner,'Ana');
 });
 test('checks membership before loading the shared board',async()=>{
  const {repository,calls}=setup(call=>({body:call.url.pathname.endsWith('team_members')?[{user_id:'member'}]:[row]}));
@@ -32,6 +32,8 @@ test('create sends only allowed columns and receives the saved record',async()=>
  assert.equal(calls[0].method,'POST');
  assert.equal(calls[0].body.id,post.id);
  assert.equal(calls[0].body.updated_at,undefined);
+ assert.equal(calls[0].body.owner,undefined);
+ assert.equal(calls[0].body.status,undefined);
  assert.equal(calls[0].body.template_name,'Modelo');
 });
 test('updates include version guard and reject a stale record',async()=>{
@@ -58,4 +60,12 @@ test('database rejection remains an error, never a successful save',async()=>{
  assert.match(databaseMessage({code:'42501'}),/Acesso negado/);
  assert.match(databaseMessage({code:'PGRST205'}),/schema.sql/);
  assert.match(databaseMessage({code:'CONFLICT'}),/outra pessoa/);
+});
+
+test('assignment uses the guarded RPC and the server-returned responsible person',async()=>{
+ const member='ec3a4dad-8741-45ab-a999-5ea91decd4be';
+ const {repository,calls}=setup(()=>({body:{...row,owner:'Marina',assigned_to:member,assignment_state:'pending'}}));
+ assert.equal((await repository.changeAssignment(post,'assign',member)).owner,'Marina');
+ assert.equal(calls[0].url.pathname,'/rest/v1/rpc/change_post_assignment');
+ assert.deepEqual(calls[0].body,{post_id:post.id,expected_updated_at:post.updatedAt,action:'assign',member_id:member});
 });
