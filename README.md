@@ -31,7 +31,7 @@ npm run preview
 - Use a busca e o filtro por área no quadro e no calendário.
 - A aba **Calendário** exibe um mês completo com os posts nos seus prazos de entrega. Navegue pelas setas, use **Hoje** para voltar ao mês atual e clique num post para abrir os detalhes. No celular, deslize horizontalmente para ver todos os dias da semana.
 - Nos detalhes do cartão, preencha **Link do Canva** com um endereço HTTPS do Canva. Depois de salvo, o link fica disponível ao reabrir o post, com o botão **Abrir design no Canva**. O site não altera as permissões de acesso do arquivo no Canva.
-- Alterne entre os temas claro e escuro pelo botão no topo. A escolha fica salva neste navegador.
+- Escolha Escuro, Escuro Lumiar ou Claro Lumiar no seletor do topo. A escolha fica salva neste navegador.
 - Os exemplos iniciais podem ser editados ou excluídos pela janela do cartão.
 
 ## Banco de dados com Supabase
