@@ -87,3 +87,20 @@ test('creates a post and its assignment through one RPC',async()=>{
  assert.equal(calls[0].url.pathname,'/rest/v1/rpc/create_post_with_assignment');
  assert.deepEqual(calls[0].body,{post_data:{...toRow(post),id:post.id},member_id:member});
 });
+
+test('reports the missing migration when an older database denies self-assignment',async()=>{
+ const {repository}=setup(()=>({status:403,body:{code:'42501',message:'Assignment denied'}}));
+ await assert.rejects(repository.changeAssignment(post,'self'),error=>{
+  assert.match(databaseMessage(error),/migrações Beta 0\.7/);
+  return true;
+ });
+ await assert.rejects(repository.changeAssignment(post,'assign'),error=>error.code==='42501');
+});
+
+test('reports a missing creation RPC without pretending the post was saved',async()=>{
+ const {repository}=setup(()=>({status:404,body:{code:'PGRST202',message:'Function not found'}}));
+ await assert.rejects(repository.save(post,true,'member'),error=>{
+  assert.match(databaseMessage(error),/migrações Beta 0\.7/);
+  return true;
+ });
+});

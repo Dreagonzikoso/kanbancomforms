@@ -136,7 +136,8 @@ function App({identity}){
  const canEdit=modal==='new'?canCreate:Boolean(modal==='edit'&&original&&(manages(original)||worksOn(original)));
  const canAssign=cloud&&original?.status===0&&manages(original);
  const choosingAssignment=cloud&&(canAssign||modal==='new');
- const canAssignSelf=modal==='new'||(original?.createdBy===identity?.id&&!original?.assignedTo);
+ const canAssignSelf=cloud&&canCreate&&(modal==='new'||
+   (canAssign&&original.createdBy===identity.id&&!original.assignedTo));
  const canDropForAssignment=(post,status)=>status===1&&post?.status===0&&
    (cloud?manages(post)&&!post.assignedTo:!post.owner.trim());
  const canRespond=cloud&&original?.status===0&&original.assignedTo===identity.id&&original.assignmentState==='pending';

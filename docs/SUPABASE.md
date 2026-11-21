@@ -2,7 +2,15 @@
 
 ## 1. Preparar o banco
 
-Em um projeto novo, execute [schema.sql](../supabase/schema.sql) no SQL Editor. Aplique as migrações em ordem: [Beta 0.3](../supabase/migrations/202611210001_beta_0_3.sql) [Beta 0.4](../supabase/migrations/202611210002_beta_0_4.sql) [Beta 0.5](../supabase/migrations/202611210003_beta_0_5.sql) e [Beta 0.7](../supabase/migrations/202611210004_beta_0_7.sql). Se o banco já está na Beta 0.5, aplique somente a Beta 0.7 antes do deploy. Execute cada migração uma vez.
+Em um projeto novo, execute [schema.sql](../supabase/schema.sql) no SQL Editor. Depois, aplique cada migração pendente uma vez, na ordem abaixo, antes do deploy.
+
+1. [Beta 0.3](../supabase/migrations/202611210001_beta_0_3.sql)
+2. [Beta 0.4](../supabase/migrations/202611210002_beta_0_4.sql)
+3. [Beta 0.5](../supabase/migrations/202611210003_beta_0_5.sql)
+4. [Beta 0.7](../supabase/migrations/202611210004_beta_0_7.sql)
+5. [Beta 0.7.b](../supabase/migrations/202611210005_beta_0_7_b.sql)
+
+Se o banco já está na Beta 0.7, aplique somente a Beta 0.7.b. A função de atribuição da Beta 0.7 é necessária para a opção **Eu vou fazer**. A Beta 0.7.b usa a conta autenticada e aprovada do autor para essa opção.
 
 A migração Beta 0.3 é transacional e preserva os posts, responsáveis em texto e etapas. Os registros antigos ficam sem autor vinculado, pois o banco anterior não registrava essa informação. O Secretário pode gerenciar esses pedidos. Contas já aprovadas mantêm acesso com o cargo inicial Bixo/Bixete. A Beta 0.4 preserva o texto de responsáveis antigos no banco. A interface mostra o nome apenas para atribuições aceitas. Ao retornar um post aceito para **Post pedido**, a atribuição é liberada e será necessário um novo aceite.
 

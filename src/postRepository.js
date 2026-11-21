@@ -12,6 +12,8 @@ export const toRow = post => ({
   canva_url:post.canvaUrl||'',
 });
 export function databaseMessage(error) {
+  if (error?.code==='ASSIGNMENT_SETUP_REQUIRED') return 'Confira se as migrações Beta 0.7 e Beta 0.7.b foram executadas no Supabase e se seu acesso ainda está ativo.';
+  if (error?.code==='SELF_ASSIGNMENT_DENIED') return 'Só o autor pode escolher “Eu vou fazer” para este pedido.';
   if (error?.code==='42501') return 'Acesso negado. Confira seu cargo e as permissões para este post.';
   if (error?.code==='42P01'||error?.code==='PGRST205') return 'Banco não configurado. Confira supabase/schema.sql e a migração Beta 0.3.';
   if (error?.code==='23514') {
@@ -23,6 +25,16 @@ export function databaseMessage(error) {
 }
 export function isTransientReadError(error) {
   return error?.status===0||error?.status===408||error?.status===429||error?.status>=500;
+}
+
+function assignmentError(error, selfAssignment=false) {
+  if (error.code==='PGRST202' || (selfAssignment && error.code==='42501' && error.message==='Assignment denied')) {
+    return {...error,code:'ASSIGNMENT_SETUP_REQUIRED'};
+  }
+  if (selfAssignment && error.code==='42501' && error.message==='Only the author can start their own post') {
+    return {...error,code:'SELF_ASSIGNMENT_DENIED'};
+  }
+  return error;
 }
 
 export function createPostRepository(client) {
@@ -41,7 +53,7 @@ export function createPostRepository(client) {
         const {data,error}=await client.rpc('create_post_with_assignment',{
           post_data:{...toRow(post),id:post.id},member_id:assigneeId,
         }).single();
-        if(error)throw error;
+        if(error)throw assignmentError(error);
         return fromRow(data);
       }
       let query = isNew ? client.from('posts').insert({...toRow(post),id:post.id}) :
@@ -55,7 +67,7 @@ export function createPostRepository(client) {
       const {data,error}=await client.rpc('change_post_assignment',{
         post_id:post.id,expected_updated_at:post.updatedAt,action,member_id:memberId ?? null,
       }).single();
-      if(error)throw error;
+      if(error)throw assignmentError(error,action==='self');
       return fromRow(data);
     },
     async remove(post) {
