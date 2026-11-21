@@ -91,3 +91,24 @@ button:disabled{opacity:.5;cursor:wait}.storage-status{display:flex;align-items:
   .brand-mark {width:35px;height:35px}
   .brand-mark::before {width:27px;height:28px}
 }
+
+.overdue-badge {
+  display:inline-block;
+  width:max-content;
+  max-width:100%;
+  padding:2px 5px;
+  border:1px solid #a55748;
+  border-radius:4px;
+  background:#3d221d;
+  color:#ffc0ab;
+  font-size:9px;
+  font-weight:600;
+  line-height:1.3;
+}
+.card-footer {flex-wrap:wrap}
+.calendar-post .overdue-badge {margin-top:4px}
+[data-theme="light"] .overdue-badge {
+  background:#fae0d2;
+  color:#8b301c;
+  border-color:#bd7662;
+}

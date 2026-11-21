@@ -9,10 +9,11 @@ Em um projeto novo, execute [schema.sql](../supabase/schema.sql) no SQL Editor. 
 3. [Beta 0.5](../supabase/migrations/202611210003_beta_0_5.sql)
 4. [Beta 0.7](../supabase/migrations/202611210004_beta_0_7.sql)
 5. [Beta 0.7.b](../supabase/migrations/202611210005_beta_0_7_b.sql)
+6. [Beta 0.7.c](../supabase/migrations/202611210006_beta_0_7_c.sql)
 
-Se o banco já está na Beta 0.7, aplique somente a Beta 0.7.b. A função de atribuição da Beta 0.7 é necessária para a opção **Eu vou fazer**. A Beta 0.7.b usa a conta autenticada e aprovada do autor para essa opção.
+Se o banco já está na Beta 0.7.b, aplique somente a Beta 0.7.c. A função de atribuição da Beta 0.7 é necessária para a opção **Eu vou fazer**. A Beta 0.7.b usa a conta autenticada e aprovada do autor para essa opção.
 
-A migração Beta 0.3 é transacional e preserva os posts, responsáveis em texto e etapas. Os registros antigos ficam sem autor vinculado, pois o banco anterior não registrava essa informação. O Secretário pode gerenciar esses pedidos. Contas já aprovadas mantêm acesso com o cargo inicial Bixo/Bixete. A Beta 0.4 preserva o texto de responsáveis antigos no banco. A interface mostra o nome apenas para atribuições aceitas. Ao retornar um post aceito para **Post pedido**, a atribuição é liberada e será necessário um novo aceite.
+A migração Beta 0.3 é transacional e preserva os posts, responsáveis em texto e etapas. Os registros antigos ficam sem autor vinculado, pois o banco anterior não registrava essa informação. O Secretário pode gerenciar esses pedidos. Contas já aprovadas mantêm acesso com o cargo inicial Bixo/Bixete. A Beta 0.4 preserva o texto de responsáveis antigos no banco. A interface mostra o nome apenas para atribuições aceitas. A partir da Beta 0.7.c, quem está responsável também pode devolver um post em **Sendo feito** ou **Post feito**. Ao retornar um post aceito para **Post pedido**, a atribuição é liberada e será necessário um novo aceite.
 
 ## 2. Habilitar cadastro e confirmação de e-mail
 

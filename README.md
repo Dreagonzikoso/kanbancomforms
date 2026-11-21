@@ -28,6 +28,8 @@ npm run preview
 - No quadro compartilhado, a Diretoria cria, atribui e movimenta os próprios pedidos. O Secretário também pode gerenciar pedidos e aprovar cadastros.
 - Você pode atribuir a confecção ao criar o post ou ao arrastar um pedido sem atribuição para **Sendo feito**. Ao cancelar a atribuição, o pedido fica na coluna original. Quando outra pessoa é indicada, o post só muda de etapa após o aceite. Em um pedido próprio, use **Eu vou fazer** para iniciar na hora. Diretoria e Secretário podem indicar qualquer outro membro aprovado. Quem aceita pode editar o pedido em andamento e movê-lo para **Post feito**.
 - O cartão mostra quem pediu o post e, depois do aceite, quem ficou responsável. Use o avatar na lateral para atualizar sua foto de perfil. A etapa pode ser alterada pelo campo **Etapa** ou arrastando o cartão entre as colunas permitidas. **Programado** é uma etapa de organização, sem integração de publicação automática.
+- Quem está responsável pode devolver um pedido de **Sendo feito** ou **Post feito** para **Post pedido**. A atribuição é liberada.
+- Posts ainda abertos recebem o aviso **Em atraso** a partir do dia seguinte ao prazo, no horário de São Paulo.
 - Use a busca e o filtro por área no quadro e no calendário.
 - A aba **Calendário** exibe um mês completo com os posts nos seus prazos de entrega. Navegue pelas setas, use **Hoje** para voltar ao mês atual e clique num post para abrir os detalhes. No celular, deslize horizontalmente para ver todos os dias da semana.
 - Nos detalhes do cartão, preencha **Link do Canva** com um endereço HTTPS do Canva. Depois de salvo, o link fica disponível ao reabrir o post, com o botão **Abrir design no Canva**. O site não altera as permissões de acesso do arquivo no Canva.
