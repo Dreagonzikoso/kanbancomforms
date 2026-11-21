@@ -8,7 +8,7 @@ export default function MemberGate({children,user,logout,sessionError}) {
 
   useEffect(()=>{
     let active=true;
-    supabase.from('team_members').select('username,effective_role').eq('user_id',user.id).maybeSingle()
+    supabase.from('team_members').select('username,effective_role,avatar_data').eq('user_id',user.id).maybeSingle()
       .then(({data,error})=>{
         if (!active) return;
         setAccess(error?{status:'error'}:{status:data?.effective_role?'approved':'pending',member:data});
@@ -25,7 +25,8 @@ export default function MemberGate({children,user,logout,sessionError}) {
 
   const username=displayLogin(user,access.member);
   if (access.status==='approved') {
-    const identity={id:user.id,username,role:access.member.effective_role,logout,sessionError};
+    const setPhoto=photo=>setAccess(current=>({...current,member:{...current.member,avatar_data:photo}}));
+    const identity={id:user.id,username,photo:access.member.avatar_data ?? null,setPhoto,role:access.member.effective_role,logout,sessionError};
     return React.cloneElement(children,{identity});
   }
 

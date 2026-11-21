@@ -27,7 +27,7 @@ npm run preview
 - Ao marcar **Usar um template existente**, informe o nome ou referência no campo exibido.
 - No quadro compartilhado, a Diretoria cria, atribui e movimenta os próprios pedidos. O Secretário também pode gerenciar pedidos e aprovar cadastros.
 - O pedido passa para **Sendo feito** quando a pessoa indicada aceita. Diretoria e Secretário podem indicar qualquer outro membro aprovado. Quem aceita pode editar o pedido em andamento e movê-lo para **Post feito**.
-- O nome do responsável aparece no cartão depois do aceite. A etapa pode ser alterada pelo campo **Etapa** ou arrastando o cartão entre as colunas permitidas. **Programado** é uma etapa de organização, sem integração de publicação automática.
+- O cartão mostra quem pediu o post e, depois do aceite, quem ficou responsável. Use o avatar na lateral para atualizar sua foto de perfil. A etapa pode ser alterada pelo campo **Etapa** ou arrastando o cartão entre as colunas permitidas. **Programado** é uma etapa de organização, sem integração de publicação automática.
 - Use a busca e o filtro por área no quadro e no calendário.
 - A aba **Calendário** exibe um mês completo com os posts nos seus prazos de entrega. Navegue pelas setas, use **Hoje** para voltar ao mês atual e clique num post para abrir os detalhes. No celular, deslize horizontalmente para ver todos os dias da semana.
 - Nos detalhes do cartão, preencha **Link do Canva** com um endereço HTTPS do Canva. Depois de salvo, o link fica disponível ao reabrir o post, com o botão **Abrir design no Canva**. O site não altera as permissões de acesso do arquivo no Canva.

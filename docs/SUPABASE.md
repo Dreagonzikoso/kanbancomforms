@@ -2,7 +2,7 @@
 
 ## 1. Preparar o banco
 
-Em um projeto novo, execute [schema.sql](../supabase/schema.sql) no SQL Editor. Aplique as migrações em ordem: [Beta 0.3](../supabase/migrations/202611210001_beta_0_3.sql) e [Beta 0.4](../supabase/migrations/202611210002_beta_0_4.sql). Se o banco já está na Beta 0.3, aplique somente a Beta 0.4 antes do deploy. Execute cada migração uma vez.
+Em um projeto novo, execute [schema.sql](../supabase/schema.sql) no SQL Editor. Aplique as migrações em ordem: [Beta 0.3](../supabase/migrations/202611210001_beta_0_3.sql) [Beta 0.4](../supabase/migrations/202611210002_beta_0_4.sql) e [Beta 0.5](../supabase/migrations/202611210003_beta_0_5.sql). Se o banco já está na Beta 0.4, aplique somente a Beta 0.5 antes do deploy. Execute cada migração uma vez.
 
 A migração Beta 0.3 é transacional e preserva os posts, responsáveis em texto e etapas. Os registros antigos ficam sem autor vinculado, pois o banco anterior não registrava essa informação. O Secretário pode gerenciar esses pedidos. Contas já aprovadas mantêm acesso com o cargo inicial Bixo/Bixete. A Beta 0.4 preserva o texto de responsáveis antigos no banco. A interface mostra o nome apenas para atribuições aceitas. Ao retornar um post aceito para **Post pedido**, a atribuição é liberada e será necessário um novo aceite.
 
@@ -57,3 +57,8 @@ Reinicie `npm run dev` depois de editar as variáveis. Na Vercel, configure-as n
 5. Atualize o quadro em outro navegador e confira o nome do responsável e a etapa. Edições concorrentes devem pedir atualização quando a versão do post estiver desatualizada.
 
 A proteção de acesso usa RLS e funções do banco. Em uma falha temporária, o quadro mantém os dados já carregados, tenta atualizar novamente e também atualiza quando a conexão do navegador volta. Posts salvos no modo local continuam no navegador e podem ser cadastrados manualmente no quadro compartilhado.
+
+
+## Fotos de perfil
+
+Clique no avatar da lateral para adicionar, trocar ou remover sua foto. O navegador centraliza a imagem em um recorte quadrado e a converte para JPEG. A foto fica no banco e é visível para membros aprovados. O quadro utiliza o autor registrado no pedido e a pessoa responsável após o aceite. Pedidos anteriores ao registro de autoria continuam no quadro com a indicação de autor não registrado.
