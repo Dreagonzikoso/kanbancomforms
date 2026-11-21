@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createClient} from '@supabase/supabase-js';
-import {createPostRepository,toRow,fromRow,databaseMessage} from '../src/postRepository.js';
+import {createPostRepository,toRow,fromRow,databaseMessage,isTransientReadError} from '../src/postRepository.js';
 const post={id:'2f754ee4-c5ee-4f29-9d47-19825dcc1a45',title:' Post ',area:'APSM',idea:' Ideia ',intent:' Intenção ',date:'2026-12-01',format:'Feed',template:true,templateName:' Modelo ',owner:' Ana ',canvaUrl:'https://www.canva.com/design/a/edit',status:1,updatedAt:'2026-10-22T10:00:00.000Z'};
 const row={...toRow(post),id:post.id,owner:"Ana",status:1,updated_at:post.updatedAt};
 function setup(handler){
@@ -68,4 +68,11 @@ test('assignment uses the guarded RPC and the server-returned responsible person
  assert.equal((await repository.changeAssignment(post,'assign',member)).owner,'Marina');
  assert.equal(calls[0].url.pathname,'/rest/v1/rpc/change_post_assignment');
  assert.deepEqual(calls[0].body,{post_id:post.id,expected_updated_at:post.updatedAt,action:'assign',member_id:member});
+});
+
+test('classifies read outages separately from permission errors',async()=>{
+ const unavailable=setup(()=>({status:504,body:{code:'UPSTREAM',message:'Gateway timeout'}}));
+ await assert.rejects(unavailable.repository.list(),isTransientReadError);
+ const forbidden=setup(()=>({status:403,body:{code:'42501',message:'denied'}}));
+ await assert.rejects(forbidden.repository.list(),error=>error.code==='42501'&&!isTransientReadError(error));
 });

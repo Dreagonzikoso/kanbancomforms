@@ -16,6 +16,13 @@ export default function MemberGate({children,user,logout,sessionError}) {
     return ()=>{active=false};
   },[user.id,attempt]);
 
+  useEffect(()=>{
+    if(access.status!=='error')return;
+    const retry=()=>setAttempt(value=>value+1);
+    window.addEventListener('online',retry);
+    return ()=>window.removeEventListener('online',retry);
+  },[access.status]);
+
   const username=displayLogin(user,access.member);
   if (access.status==='approved') {
     const identity={id:user.id,username,role:access.member.effective_role,logout,sessionError};

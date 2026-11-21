@@ -2,9 +2,9 @@
 
 ## 1. Preparar o banco
 
-Em um projeto novo, execute [schema.sql](../supabase/schema.sql) no SQL Editor. Em seguida, execute a [migração Beta 0.3](../supabase/migrations/202611210001_beta_0_3.sql). Em um projeto com o esquema anterior, execute apenas a migração uma vez, antes de publicar a nova versão da aplicação.
+Em um projeto novo, execute [schema.sql](../supabase/schema.sql) no SQL Editor. Aplique as migrações em ordem: [Beta 0.3](../supabase/migrations/202611210001_beta_0_3.sql) e [Beta 0.4](../supabase/migrations/202611210002_beta_0_4.sql). Se o banco já está na Beta 0.3, aplique somente a Beta 0.4 antes do deploy. Execute cada migração uma vez.
 
-A migração é transacional e preserva os posts, responsáveis em texto e etapas. Os registros antigos ficam sem autor vinculado, pois o banco anterior não registrava essa informação. O Secretário pode gerenciar esses pedidos. Contas já aprovadas mantêm acesso com o cargo inicial Bixo/Bixete. Nomes de responsáveis antigos continuam visíveis, mas o vínculo de uma atribuição nova só é criado a partir de **Post pedido**.
+A migração Beta 0.3 é transacional e preserva os posts, responsáveis em texto e etapas. Os registros antigos ficam sem autor vinculado, pois o banco anterior não registrava essa informação. O Secretário pode gerenciar esses pedidos. Contas já aprovadas mantêm acesso com o cargo inicial Bixo/Bixete. A Beta 0.4 preserva o texto de responsáveis antigos no banco. A interface mostra o nome apenas para atribuições aceitas. Ao retornar um post aceito para **Post pedido**, a atribuição é liberada e será necessário um novo aceite.
 
 ## 2. Habilitar cadastro e confirmação de e-mail
 
@@ -52,8 +52,8 @@ Reinicie `npm run dev` depois de editar as variáveis. Na Vercel, configure-as n
 
 1. Cadastre e confirme uma conta. Confira a tela de espera e verifique que a conta não pode consultar os posts.
 2. Entre como Secretário e aprove o cadastro escolhendo o cargo efetivo. Confira a identidade e o cargo na lateral.
-3. Entre como Diretoria, crie um pedido e atribua a um Bixo/Bixete. Verifique que outra Diretoria não pode alterar esse pedido.
-4. Entre como a pessoa que recebeu a atribuição. Recuse e verifique que o pedido volta a ficar disponível. Assuma o pedido, edite-o em **Sendo feito** e mova-o para **Post feito**. Outro Bixo/Bixete deve conseguir ler o cartão sem alterá-lo.
+3. Entre como Diretoria, crie um pedido e faça uma atribuição. Confira os cargos na lista e a ausência de sua própria conta. Verifique que outro Diretor sem atribuição não pode alterar o pedido.
+4. Entre como a pessoa indicada. Recuse e confira que o pedido permanece em **Post pedido**, disponível para nova atribuição. Atribua novamente e aceite. O post deve ir automaticamente para **Sendo feito**, mostrar o nome do responsável e permitir edição e avanço para **Post feito**.
 5. Atualize o quadro em outro navegador e confira o nome do responsável e a etapa. Edições concorrentes devem pedir atualização quando a versão do post estiver desatualizada.
 
-A proteção de acesso usa RLS e funções do banco. Posts salvos no modo local continuam no navegador e podem ser cadastrados manualmente no quadro compartilhado.
+A proteção de acesso usa RLS e funções do banco. Em uma falha temporária, o quadro mantém os dados já carregados, tenta atualizar novamente e também atualiza quando a conexão do navegador volta. Posts salvos no modo local continuam no navegador e podem ser cadastrados manualmente no quadro compartilhado.

@@ -9,7 +9,30 @@ export default function AuthGate({children}) {
   const [registering,setRegistering]=useState(false),[confirmation,setConfirmation]=useState(''),[showConfirmation,setShowConfirmation]=useState(false),[message,setMessage]=useState('');
   const [email,setEmail]=useState(''),[requestedRole,setRequestedRole]=useState('');
   function switchMode(){setRegistering(!registering);setError('');setMessage('');setPassword('');setConfirmation('');setShowPassword(false);setShowConfirmation(false)}
-  useEffect(()=>{if(!supabase)return;let alive=true;const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,next)=>{if(alive){setSession(next);setChecking(false)}});supabase.auth.getSession().then(({data,error})=>{if(alive){setSession(data.session);setChecking(false);if(error)setError('Não foi possível recuperar sua sessão. Entre novamente.')}}).catch(()=>{if(alive){setChecking(false);setError('Não foi possível recuperar sua sessão.')}});return()=>{alive=false;subscription.unsubscribe()}},[]);
+  useEffect(()=>{
+    if(!supabase)return;
+    let eventVersion=0;
+    let active=true;
+    const {data:{subscription}}=supabase.auth.onAuthStateChange((_event,next)=>{
+      eventVersion++;
+      if(active){setSession(next);setChecking(false)}
+    });
+    async function recoverSession(){
+      const version=eventVersion;
+      try {
+        const {data,error}=await supabase.auth.getSession();
+        if(active&&version===eventVersion&&!error&&data.session)setSession(data.session);
+      } catch {
+        // Keep the current session state while connectivity is being restored.
+      }
+    }
+    window.addEventListener('online',recoverSession);
+    return ()=>{
+      active=false;
+      subscription.unsubscribe();
+      window.removeEventListener('online',recoverSession);
+    };
+  },[]);
   async function login(event){
     event.preventDefault();if(busy)return;
     let credentials;

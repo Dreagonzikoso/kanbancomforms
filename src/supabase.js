@@ -18,6 +18,6 @@ if (cloudConfigured) {
       try { payload = JSON.parse(atob(key.split('.')[1].replace(/-/g,'+').replace(/_/g,'/'))); } catch {}
       if (payload?.role !== 'anon') throw new Error('Use a chave publishable ou anon pública, nunca uma chave secret/service_role.');
     }
-    supabase = createClient(url,key);
+    supabase = createClient(url,key,{db:{timeout:15000}});
   } catch (error) { configurationError = error.message; }
 }

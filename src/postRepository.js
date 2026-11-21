@@ -14,19 +14,26 @@ export const toRow = post => ({
 export function databaseMessage(error) {
   if (error?.code==='42501') return 'Acesso negado. Confira seu cargo e as permissões para este post.';
   if (error?.code==='42P01'||error?.code==='PGRST205') return 'Banco não configurado. Confira supabase/schema.sql e a migração Beta 0.3.';
-  if (error?.code==='23514') return 'Dados inválidos. Confira área, responsável, prazo e template.';
+  if (error?.code==='23514') {
+    if (/assigned member must accept|accepted assignment/.test(error.message || '')) return 'A pessoa indicada precisa aceitar antes de iniciar o post.';
+    return 'Dados inválidos. Confira área, responsável, prazo e template.';
+  }
   if (error?.code==='CONFLICT'||error?.code==='PT409') return 'Este post foi alterado ou excluído por outra pessoa. Atualize o quadro e abra o post novamente antes de editar.';
   return 'Não foi possível acessar o banco. Verifique sua conexão e tente novamente.';
 }
+export function isTransientReadError(error) {
+  return error?.status===0||error?.status===408||error?.status===429||error?.status>=500;
+}
+
 export function createPostRepository(client) {
   return {
     async list() {
       // Explicit membership check prevents a denied SELECT from appearing as an empty board.
-      const {data:member,error:memberError}=await client.from('team_members').select('user_id').not('effective_role','is',null).limit(1);
-      if (memberError) throw memberError;
+      const {data:member,error:memberError,status:memberStatus}=await client.from('team_members').select('user_id').not('effective_role','is',null).limit(1);
+      if (memberError) throw {...memberError,status:memberStatus};
       if (!member?.length) throw {code:'42501'};
-      const {data,error}=await client.from('posts').select('*').order('created_at',{ascending:true});
-      if(error)throw error;
+      const {data,error,status}=await client.from('posts').select('*').order('created_at',{ascending:true});
+      if(error)throw {...error,status};
       return data.map(fromRow);
     },
     async save(post,isNew) {
