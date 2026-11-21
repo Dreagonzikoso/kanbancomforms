@@ -36,7 +36,14 @@ export function createPostRepository(client) {
       if(error)throw {...error,status};
       return data.map(fromRow);
     },
-    async save(post,isNew) {
+    async save(post,isNew,assigneeId) {
+      if(isNew&&assigneeId){
+        const {data,error}=await client.rpc('create_post_with_assignment',{
+          post_data:{...toRow(post),id:post.id},member_id:assigneeId,
+        }).single();
+        if(error)throw error;
+        return fromRow(data);
+      }
       let query = isNew ? client.from('posts').insert({...toRow(post),id:post.id}) :
         client.from('posts').update({...toRow(post),status:post.status}).eq('id',post.id).eq('updated_at',post.updatedAt);
       const {data,error}=await query.select('*').maybeSingle();

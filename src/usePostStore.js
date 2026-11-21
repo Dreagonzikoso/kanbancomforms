@@ -59,7 +59,7 @@ export function usePostStore(initial) {
       let saved;
       if(operation==='remove')await repository.remove(post);
       else if(operation==='assignment')saved=await repository.changeAssignment(post,action,memberId);
-      else saved=await repository.save(post,operation==='create');
+      else saved=await repository.save(post,operation==='create',memberId);
       if(!mounted.current)return false;
       setPosts(current=>{
         const next=operation==='remove'?current.filter(p=>p.id!==post.id):operation==='create'?[...current,saved]:current.map(p=>p.id===post.id?saved:p);
@@ -70,10 +70,10 @@ export function usePostStore(initial) {
     finally{locked.current=false;if(mounted.current)setBusy(false)}
   }
   // Local persistence is performed before committing React state, so failed saves stay visible.
-  async function localMutate(post,operation){
-    if(repository)return mutate(post,operation);
+  async function localMutate(post,operation,memberId){
+    if(repository)return mutate(post,operation,undefined,memberId);
     try{const next=operation==='remove'?posts.filter(p=>p.id!==post.id):operation==='create'?[...posts,post]:posts.map(p=>p.id===post.id?post:p);localStorage.setItem('cavc-posts',JSON.stringify(next));setPosts(next);setStoreError('');return true}
     catch{setStoreError('Não foi possível salvar neste navegador. Verifique o espaço disponível.');return false}
   }
-  return {posts,loading,busy,storeError,syncError,refresh,savePost:(post,isNew)=>localMutate(post,isNew?'create':'update'),changeAssignment:(post,action,memberId)=>mutate(post,'assignment',action,memberId),removePost:post=>localMutate(post,'remove'),cloud:Boolean(repository)};
+  return {posts,loading,busy,storeError,syncError,refresh,savePost:(post,isNew,assigneeId)=>localMutate(post,isNew?'create':'update',assigneeId),changeAssignment:(post,action,memberId)=>mutate(post,'assignment',action,memberId),removePost:post=>localMutate(post,'remove'),cloud:Boolean(repository)};
 }

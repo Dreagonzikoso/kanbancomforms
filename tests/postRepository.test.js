@@ -76,3 +76,14 @@ test('classifies read outages separately from permission errors',async()=>{
  const forbidden=setup(()=>({status:403,body:{code:'42501',message:'denied'}}));
  await assert.rejects(forbidden.repository.list(),error=>error.code==='42501'&&!isTransientReadError(error));
 });
+
+test('creates a post and its assignment through one RPC',async()=>{
+ const member='ec3a4dad-8741-45ab-a999-5ea91decd4be';
+ const {repository,calls}=setup(()=>({body:{...row,status:0,assigned_to:member,assignment_state:'pending'}}));
+ const saved=await repository.save(post,true,member);
+ assert.equal(saved.assignedTo,member);
+ assert.equal(saved.assignmentState,'pending');
+ assert.equal(calls.length,1);
+ assert.equal(calls[0].url.pathname,'/rest/v1/rpc/create_post_with_assignment');
+ assert.deepEqual(calls[0].body,{post_data:{...toRow(post),id:post.id},member_id:member});
+});

@@ -26,7 +26,7 @@ npm run preview
 - As áreas disponíveis são **Academica, Mobilização, Eventos, APSM e Gestão**. Posts antigos mantêm sua área anterior até a edição; selecione uma área atual ao salvá-los.
 - Ao marcar **Usar um template existente**, informe o nome ou referência no campo exibido.
 - No quadro compartilhado, a Diretoria cria, atribui e movimenta os próprios pedidos. O Secretário também pode gerenciar pedidos e aprovar cadastros.
-- O pedido passa para **Sendo feito** quando a pessoa indicada aceita. Diretoria e Secretário podem indicar qualquer outro membro aprovado. Quem aceita pode editar o pedido em andamento e movê-lo para **Post feito**.
+- Você pode atribuir a confecção ao criar o post ou ao arrastar um pedido sem atribuição para **Sendo feito**. Ao cancelar a atribuição, o pedido fica na coluna original. Quando outra pessoa é indicada, o post só muda de etapa após o aceite. Em um pedido próprio, use **Eu vou fazer** para iniciar na hora. Diretoria e Secretário podem indicar qualquer outro membro aprovado. Quem aceita pode editar o pedido em andamento e movê-lo para **Post feito**.
 - O cartão mostra quem pediu o post e, depois do aceite, quem ficou responsável. Use o avatar na lateral para atualizar sua foto de perfil. A etapa pode ser alterada pelo campo **Etapa** ou arrastando o cartão entre as colunas permitidas. **Programado** é uma etapa de organização, sem integração de publicação automática.
 - Use a busca e o filtro por área no quadro e no calendário.
 - A aba **Calendário** exibe um mês completo com os posts nos seus prazos de entrega. Navegue pelas setas, use **Hoje** para voltar ao mês atual e clique num post para abrir os detalhes. No celular, deslize horizontalmente para ver todos os dias da semana.

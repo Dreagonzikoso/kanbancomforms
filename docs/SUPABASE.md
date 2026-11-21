@@ -2,7 +2,7 @@
 
 ## 1. Preparar o banco
 
-Em um projeto novo, execute [schema.sql](../supabase/schema.sql) no SQL Editor. Aplique as migrações em ordem: [Beta 0.3](../supabase/migrations/202611210001_beta_0_3.sql) [Beta 0.4](../supabase/migrations/202611210002_beta_0_4.sql) e [Beta 0.5](../supabase/migrations/202611210003_beta_0_5.sql). Se o banco já está na Beta 0.4, aplique somente a Beta 0.5 antes do deploy. Execute cada migração uma vez.
+Em um projeto novo, execute [schema.sql](../supabase/schema.sql) no SQL Editor. Aplique as migrações em ordem: [Beta 0.3](../supabase/migrations/202611210001_beta_0_3.sql) [Beta 0.4](../supabase/migrations/202611210002_beta_0_4.sql) [Beta 0.5](../supabase/migrations/202611210003_beta_0_5.sql) e [Beta 0.7](../supabase/migrations/202611210004_beta_0_7.sql). Se o banco já está na Beta 0.5, aplique somente a Beta 0.7 antes do deploy. Execute cada migração uma vez.
 
 A migração Beta 0.3 é transacional e preserva os posts, responsáveis em texto e etapas. Os registros antigos ficam sem autor vinculado, pois o banco anterior não registrava essa informação. O Secretário pode gerenciar esses pedidos. Contas já aprovadas mantêm acesso com o cargo inicial Bixo/Bixete. A Beta 0.4 preserva o texto de responsáveis antigos no banco. A interface mostra o nome apenas para atribuições aceitas. Ao retornar um post aceito para **Post pedido**, a atribuição é liberada e será necessário um novo aceite.
 
@@ -52,7 +52,7 @@ Reinicie `npm run dev` depois de editar as variáveis. Na Vercel, configure-as n
 
 1. Cadastre e confirme uma conta. Confira a tela de espera e verifique que a conta não pode consultar os posts.
 2. Entre como Secretário e aprove o cadastro escolhendo o cargo efetivo. Confira a identidade e o cargo na lateral.
-3. Entre como Diretoria, crie um pedido e faça uma atribuição. Confira os cargos na lista e a ausência de sua própria conta. Verifique que outro Diretor sem atribuição não pode alterar o pedido.
+3. Entre como Diretoria e atribua um pedido no formulário de criação. Também é possível arrastar um pedido sem atribuição para **Sendo feito** para abrir a janela de atribuição. Ao cancelar, o cartão permanece em **Post pedido**. Confira os cargos na lista. Use **Eu vou fazer** para iniciar seu próprio pedido imediatamente. Verifique que outro Diretor sem atribuição não pode alterar o pedido.
 4. Entre como a pessoa indicada. Recuse e confira que o pedido permanece em **Post pedido**, disponível para nova atribuição. Atribua novamente e aceite. O post deve ir automaticamente para **Sendo feito**, mostrar o nome do responsável e permitir edição e avanço para **Post feito**.
 5. Atualize o quadro em outro navegador e confira o nome do responsável e a etapa. Edições concorrentes devem pedir atualização quando a versão do post estiver desatualizada.
 
